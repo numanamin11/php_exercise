@@ -1,0 +1,80 @@
+#!/bin/bash
+# @author Ahsan Shabbr <AhsanMShabbir@gmail.com>
+# Usage: bash ahsan command
+NC='\033[0m'
+GREEN='\033[0;32m'
+CYAN='\033[0;36m'
+cmd="$1"
+
+usage() { echo "Usage: bash ahsan <cc|dump> " 1>&2; exit 1; }
+
+case $cmd in
+     dump)
+        composer dump-autoload
+     ;;
+#      seed)
+#          php artisan migrate:fresh
+#          php artisan import:db MasterDB
+#          php artisan import:db countries
+#          php artisan import:db industries
+#          php artisan import:db event_industries
+#          php artisan import:db industry_job_functions
+#          php artisan import:db cities
+#          php artisan import:db states
+#          php artisan import:db templates
+
+#          php artisan db:seed
+#          composer dump-autoload
+#          ;;
+          #end of seed
+     dp)
+        php artisan cache:forget spatie.permission.cache
+        ;;
+     cc | cv | vc | rc )
+          echo "Clearing Cache"
+          php artisan cache:clear
+          php artisan view:clear
+          php artisan config:clear
+          php artisan route:clear
+          php artisan cache:forget spatie.permission.cache
+	  echo "Composer dump autoload"
+	  composer dump-autoload
+          ;;
+     db)
+          php artisan migrate --path=/database/migrations/updates/
+          ;;
+     config)
+          if [ -d "storage/framework" ]; then
+               echo "Folder storage/framework is already exists."
+          else
+               echo "Creating storage/framework"
+               mkdir storage/framework
+          fi
+
+          if [ -d "storage/framework/cache" ]; then
+               echo "Folder storage/framework/cache is already exists."
+          else
+               echo "Creating storage/framework/cache"
+               mkdir storage/framework/cache
+          fi
+
+          if [ -d "storage/framework/sessions" ]; then
+               echo "Folder storage/framework/sessions is already exists."
+          else
+               echo "Creating storage/framework/sessions"
+               mkdir storage/framework/sessions
+          fi
+
+          if [ -d "storage/framework/views" ]; then
+               echo "Folder storage/framework/views is already exists."
+          else
+               echo "Creating storage/framework/views"
+               mkdir storage/framework/views
+          fi
+esac
+
+
+
+
+
+
